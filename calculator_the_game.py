@@ -47,21 +47,21 @@ def I(v):
 
 # these lambda's are a crime against humanity and should be broken out into actual functions
 key_funcs = [
-    (r'^[0-9]+$', lambda x, v: int(str(I(v)) + x)),
-    (r'^[+-][1-9][0-9]*$', lambda x, v: v + int(x)),
-    (r'^\+/-$', lambda x, v: -v),
-    (r'^x[1-9][0-9]*$', lambda x, v: v * int(x[1:])),
-    (r'^/[1-9][0-9]*$', lambda x, v: v / int(x[1:])),
-    (r'^R$', lambda x, v: int(str(abs(I(v)))[::-1]) * (1 if v > 0 else -1)),
-    (r'^<<$', lambda x, v: int(str(I(v))[:-1]) if abs(v) > 9 else 0),
+    (r'[0-9]+', lambda x, v: int(str(I(v)) + x)),
+    (r'[+-][1-9][0-9]*', lambda x, v: v + int(x)),
+    (r'\+/-', lambda x, v: -v),
+    (r'x[1-9][0-9]*', lambda x, v: v * int(x[1:])),
+    (r'/[1-9][0-9]*', lambda x, v: v / int(x[1:])),
+    (r'R', lambda x, v: int(str(abs(I(v)))[::-1]) * (1 if v > 0 else -1)),
+    (r'<<', lambda x, v: int(str(I(v))[:-1]) if abs(v) > 9 else 0),
     (r'[0-9]+=>[0-9]+', lambda x, v: int(str(I(v)).replace(*x.split('=>')))),
-    (r'^S$', lambda x, v: sum(int(i) for i in str(I(v)))),
+    (r'S', lambda x, v: sum(int(i) for i in str(I(v)))),
 ]
 
 
 def get_key(key):
     for r, f in key_funcs:
-        if re.match(r, key):
+        if re.fullmatch(r, key):
             def bob(v):
                 try:
                     return f(key, v)
